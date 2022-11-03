@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 
 
 // Mongo DB Connector
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // Connecting ENV
 require('dotenv').config();
@@ -61,7 +61,6 @@ const run = async () => {
         // ! Getting ORDERS BY QUERY SYSTEM
         app.get('/orders', async (req,res)=> {
 
-            console.log(req.query.email)
             let query ={};
 
             if(req.query.email)
@@ -104,10 +103,30 @@ const run = async () => {
 
 
 
+        // ! DELETING ITEM FROM DATABASE
+        app.delete('/orders/:id',async(req,res)=> {
+
+            const id = req.params.id;
+
+            console.log(id);
+
+            // Finding the id
+            const query = {_id : ObjectId(id)}
+
+        
+
+            // Deleting the item from the database.
+            result = await orderCollection.deleteOne(query);
+
+            
+                res.send(result);
+            
+        })
 
 
 
-        // *!Getting specific Data from data base.
+
+        // *!Getting specific Data from data base by id.
         app.get('/checkout/:id', async(req,res)=> {
             // Getting the id from the sender
             const id = req.params.id;

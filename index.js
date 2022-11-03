@@ -32,37 +32,52 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 const run = async () => {
     try {
-        // Creating database
-        const database = client.db("userCollectionDB").collection("users");
+        // !Creating database ServicesCollection
+        const servicesCollection = client.db("userCollectionDB").collection("users");
+
+
+
+        // !Creating database for order collection
+        const orderCollection = client.db("orderCollectionDB").collection("orders");
 
 
 
 
 
-        // Fake data
-        // const data = {name: 'rock',roll: 1, age: 27};
-
-
-        // injecting data
-        // const result = await database.insertOne(data);
-
-        // console.log(result);
 
 
 
 
 
-        // // Getting data from the database all
-        // app.get('/services',async(req,res)=> {
 
-        //     // query Data to get all data
-        //     const query = {};
+        // ! Storing Order  by posting
+        app.post('/orders' ,async(req,res)=>{
+            const order = req.body;
+            const result =  await orderCollection.insertOne(order);
+            res.send(result);
+        })
 
-        //     // Finding data from the database
-        //     const services = await database.findOne(query);
 
-        //     // Sending the data to client side.
-        //     res.send(services);
+        // ! Getting ORDERS BY QUERY SYSTEM
+        app.get('/orders', async (req,res)=> {
+
+            console.log(req.query.email)
+            let query ={};
+
+            if(req.query.email)
+            {
+                query= {email: req.query.email};
+            }
+
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+
+        })
+        
+
+
+
 
 
         // })
@@ -76,7 +91,7 @@ const run = async () => {
             // const cursor = await database.findOne(query);
 
             // Finding data from the database
-            const cursor = await database.find(query);
+            const cursor = await servicesCollection.find(query);
 
 
             // Convert into array to use client side.
@@ -103,7 +118,7 @@ const run = async () => {
             // getting the data from the database query wise.
             // !FIND ONE SYSTEM FOR FINDING ONE DATA MUST AND NO 
             // !NEED TO CONVERT TO USE IT
-            const service = await database.findOne(query);
+            const service = await servicesCollection.findOne(query);
 
 
 

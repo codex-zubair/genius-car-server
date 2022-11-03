@@ -117,8 +117,6 @@ const run = async () => {
 
             // Deleting the item from the database.
             result = await orderCollection.deleteOne(query);
-
-                console.log(result);
                 res.send(result);
             
         })
@@ -133,6 +131,9 @@ const run = async () => {
 
             // Query the id from the data base.
             const query  = {_id : id};
+
+           
+
 
             // getting the data from the database query wise.
             // !FIND ONE SYSTEM FOR FINDING ONE DATA MUST AND NO 

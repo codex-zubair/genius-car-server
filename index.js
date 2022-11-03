@@ -108,17 +108,17 @@ const run = async () => {
 
             const id = req.params.id;
 
-            console.log(id);
+            // console.log(id);
 
             // Finding the id
-            const query = {_id : ObjectId(id)}
+            const query = {_id : id}
 
         
 
             // Deleting the item from the database.
             result = await orderCollection.deleteOne(query);
 
-            
+                console.log(result);
                 res.send(result);
             
         })

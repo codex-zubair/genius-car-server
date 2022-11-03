@@ -4,6 +4,10 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 
+
+// Mongo DB Connector
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
 // Connecting ENV
 require('dotenv').config();
 
@@ -16,19 +20,50 @@ app.use(cors());
 app.use(express.json());
 
 
+// DB_USER =dbUser3
+// PASSWORD =9okgKumeRernJmwU
+
+// dbuser4
+// MyhOETUaXjTtNGir
 
 
-
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.PASSWORD}@cluster0.9zcs4sa.mongodb.net/?retryWrites=true&w=majority`;
+const uri = "mongodb+srv://dbuser4:MyhOETUaXjTtNGir@cluster0.9zcs4sa.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+const run = async () => {
+    try {
+        // Creating database
+        const database = client.db("userCollectionDB").collection("users");
 
-const user = () => {
 
+
+
+
+        // Fake data
+        const data = {name: 'rock',roll: 1, age: 27};
+
+
+        // injecting data
+        const result = await database.insertOne(data);
+
+        console.log(result);
+
+
+
+
+    }
+    finally {
+        console.log("Finally Work Done!")
+        console.log("we will not close the connection!")
+    }
+
+
+  
 
 }
+
+
+run().catch(error => console.log(error))
 
 
 

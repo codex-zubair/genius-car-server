@@ -40,16 +40,77 @@ const run = async () => {
 
 
         // Fake data
-        const data = {name: 'rock',roll: 1, age: 27};
+        // const data = {name: 'rock',roll: 1, age: 27};
 
 
         // injecting data
-        const result = await database.insertOne(data);
+        // const result = await database.insertOne(data);
 
-        console.log(result);
+        // console.log(result);
 
 
 
+
+
+        // // Getting data from the database all
+        // app.get('/services',async(req,res)=> {
+
+        //     // query Data to get all data
+        //     const query = {};
+
+        //     // Finding data from the database
+        //     const services = await database.findOne(query);
+
+        //     // Sending the data to client side.
+        //     res.send(services);
+
+
+        // })
+        // *!Getting data from the database all
+        app.get('/services',async(req,res)=> {
+
+            // query Data to get all data
+            const query = {};
+
+            // it will give just first one data
+            // const cursor = await database.findOne(query);
+
+            // Finding data from the database
+            const cursor = await database.find(query);
+
+
+            // Convert into array to use client side.
+            services = await cursor.toArray();
+
+            // Sending the data to client side.
+            res.send(services);
+            // res.send(cursor);
+        })
+
+
+
+
+
+
+        // *!Getting specific Data from data base.
+        app.get('/checkout/:id', async(req,res)=> {
+            // Getting the id from the sender
+            const id = req.params.id;
+
+            // Query the id from the data base.
+            const query  = {_id : id};
+
+            // getting the data from the database query wise.
+            // !FIND ONE SYSTEM FOR FINDING ONE DATA MUST AND NO 
+            // !NEED TO CONVERT TO USE IT
+            const service = await database.findOne(query);
+
+
+
+            // Converting the data to use it
+            res.send(service);
+
+        })
 
     }
     finally {
